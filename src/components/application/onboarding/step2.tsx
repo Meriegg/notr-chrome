@@ -6,6 +6,7 @@ import { StepProps } from "./main";
 import { useQuery } from "react-query";
 
 export const Step2 = ({ setCurrentStep }: StepProps) => {
+  const [showNextButton, setShowNextButton] = useState(false);
   const [appUrl, setAppUrl] = useState("");
   const [isError, setError] = useState(false);
   const [finishedVerifications, setFinishedVerifications] = useState<{
@@ -66,7 +67,13 @@ export const Step2 = ({ setCurrentStep }: StepProps) => {
 
   useEffect(() => {
     if (!appUrl) return;
-  }, [appUrl]);
+
+    if (
+      Object.values(finishedVerifications).every((val) => val === true) &&
+      !isError
+    )
+      setShowNextButton(true);
+  }, [appUrl, finishedVerifications, isError]);
 
   if (!appUrl) {
     return (
@@ -164,17 +171,16 @@ export const Step2 = ({ setCurrentStep }: StepProps) => {
         </Button>
       )}
 
-      {Object.values(finishedVerifications).every((val) => val === true) &&
-        !isError && (
-          <Button
-            onClick={() => {
-              chrome.storage.local.set({ onboardingStep: 2 });
-              setCurrentStep(2);
-            }}
-          >
-            Final step
-          </Button>
-        )}
+      {showNextButton && (
+        <Button
+          onClick={() => {
+            chrome.storage.local.set({ onboardingStep: 2 });
+            setCurrentStep(2);
+          }}
+        >
+          Final step
+        </Button>
+      )}
     </div>
   );
 };

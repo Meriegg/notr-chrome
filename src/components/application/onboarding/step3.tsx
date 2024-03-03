@@ -3,12 +3,13 @@ import { StepProps } from "./main";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { useMutation } from "react-query";
-import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { useAxios } from "@/hooks/use-axios";
 
 export const Step3 = ({}: StepProps) => {
   const [authorizationToken, setAuthorizationToken] = useState("");
   const [appUrl, setAppUrl] = useState("");
+  const [axios] = useAxios();
   const appExtensionsLink = `${appUrl}/application/extensions`;
 
   chrome.storage.local.get(["appUrl"], (items) => {
@@ -20,12 +21,15 @@ export const Step3 = ({}: StepProps) => {
     { response?: { data?: string }; message?: string | null }
   >({
     mutationFn: () => {
-      return axios.post(`${appUrl}/api/extension/auth/authorize`, {
+      return axios.post("/api/extension/auth/authorize", {
         extensionToken: authorizationToken,
       });
     },
     onSuccess: () => {
-      chrome.storage.local.set({ auth_token: authorizationToken });
+      chrome.storage.local.set({
+        auth_token: authorizationToken,
+        onboardingStep: 0,
+      });
       window.location.reload();
     },
   });
