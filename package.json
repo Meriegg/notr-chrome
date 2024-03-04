@@ -11,6 +11,8 @@
     "build:dev": "tsc && vite build && cp dist '/mnt/c/Users/yaboy/My Documents/notr-chrome' -r # This command is only used for local development on wsl2 in order to copy files from wsl2 to windows, if you wish to use this on your system make sure to modify the command to meet your requirements."
   },
   "dependencies": {
+    "@blocknote/core": "^0.11.2",
+    "@blocknote/react": "^0.11.2",
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-slot": "^1.0.2",
     "axios": "^1.6.7",

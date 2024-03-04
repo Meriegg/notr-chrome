@@ -27,8 +27,9 @@ function App() {
     <>
       <Nav />
 
-      <p>Noteid:{currentNoteId}</p>
-      {currentNoteId ? <NoteDisplay /> : <FileTree />}
+      <div className="p-2">
+        {currentNoteId ? <NoteDisplay /> : <FileTree />}
+      </div>
     </>
   );
 }

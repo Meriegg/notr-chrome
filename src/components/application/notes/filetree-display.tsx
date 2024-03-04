@@ -1,6 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { useAxios } from "@/hooks/use-axios";
 import { useCurrentNote } from "@/lib/zustand/current-note";
-import { Loader2 } from "lucide-react";
+import { ChevronDown, ChevronUp, Loader2, Notebook } from "lucide-react";
 import { Fragment, useState } from "react";
 import { useQuery } from "react-query";
 
@@ -69,9 +70,15 @@ const FileTreeDisplay = ({ entries }: { entries: FileTreeItem[] }) => {
           {entry.type === "folder" ? (
             <FolderDisplay entry={entry} />
           ) : (
-            <button onClick={() => setCurrentNote(entry.noteId)}>
-              Note: {entry.entryName}
-            </button>
+            <Button
+              variant="ghost"
+              className="flex justify-start items-center gap-2 text-left w-full"
+              size="sm"
+              onClick={() => setCurrentNote(entry.noteId)}
+            >
+              <Notebook className="text-inherit w-3 h-3" />
+              {entry.entryName}
+            </Button>
           )}
         </Fragment>
       ))}
@@ -84,13 +91,23 @@ const FolderDisplay = ({ entry }: { entry: FileTreeItem }) => {
   if (entry.type !== "folder") return null;
 
   return (
-    <div className="flex flex-col items-start gap-1">
-      <button onClick={() => setIsOpen(!isOpen)}>
-        ({isOpen ? "open" : "closed"}) Folder: {entry.entryName}
-      </button>
+    <div className="flex flex-col items-start gap-1 w-full">
+      <Button
+        variant="outline"
+        size="sm"
+        className="flex justify-start items-center text-left gap-2 w-full"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        {isOpen ? (
+          <ChevronUp className="w-3 h-3 text-inherit" />
+        ) : (
+          <ChevronDown className="w-3 h-3 text-inherit" />
+        )}
+        {entry.entryName}
+      </Button>
 
       {isOpen && (
-        <div className="pl-2 flex flex-col gap-1 items-start">
+        <div className="pl-2 flex flex-col gap-1 items-start w-full">
           <FileTreeDisplay entries={entry.content} />
         </div>
       )}
