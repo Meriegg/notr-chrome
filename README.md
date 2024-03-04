@@ -23,7 +23,7 @@ git clone https://github.com/Meriegg/notr-chrome.git
 And install the packages:
 
 ```
-pnpm run install
+pnpm install
 ```
 
 Then you need to build your extension:
